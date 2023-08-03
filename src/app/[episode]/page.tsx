@@ -58,9 +58,10 @@ export default function Episode({ episode }) {
     </>
   )
 }
-
+/*
 export async function getStaticProps({ params }) {
-  let feed = await parse('https://their-side-feed.vercel.app/api/feed')
+  let feed = await parse('https://thejobtalk.com/wp-json/wp/v2/posts')
+  console.log(feed)
   let episode = feed.items
     .map(({ id, title, description, content, enclosures, published }) => ({
       id: id.toString(),
@@ -90,7 +91,8 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  let feed = await parse('https://their-side-feed.vercel.app/api/feed')
+  //let feed = await parse('https://their-side-feed.vercel.app/api/feed')
+  let feed = await parse('https://thejobtalk.com/wp-json/wp/v2/posts')
 
   return {
     paths: feed.items.map(({ id }) => ({
@@ -101,3 +103,4 @@ export async function getStaticPaths() {
     fallback: 'blocking',
   }
 }
+*/

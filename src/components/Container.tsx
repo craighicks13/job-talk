@@ -1,6 +1,12 @@
 import clsx from 'clsx'
 
-export function Container({ className, children, ...props }) {
+type ContainerProps = {
+  className?: string
+  children: React.ReactNode
+  props?: any
+}
+
+export function Container({ className, children, ...props }: ContainerProps) {
   return (
     <div className={clsx('lg:px-8', className)} {...props}>
       <div className="lg:max-w-4xl">
