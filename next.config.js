@@ -4,6 +4,18 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'thejobtalk.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.rss.com',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig
