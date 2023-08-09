@@ -1,3 +1,4 @@
+import { prisma } from '@/lib/prisma'
 import { secondsToTime } from '@/lib/utils'
 import { NextResponse } from 'next/server'
 import parse from 'rss-to-json'
@@ -10,31 +11,11 @@ export async function GET(request: Request) {
     return NextResponse.error()
   }
 
-  const feed = await parse('https://media.rss.com/thejobtalk/feed.xml')
-  // const res = await fetch(
-  //   'https://thejobtalk.com/wp-json/wp/v2/posts?_fields=id,slug,yoast_head_json&slug=' +
-  //     episode
-  // )
-  // const posts = await res.json()
-
-  const episodeNumber = Number(episode.split('-')[1])
-
-  var result = feed.items.filter((episode) => {
-    return episode.itunes_episode === episodeNumber
-  })[0]
-
-  const response = {
-    id: `${result.itunes_episode}`,
-    title: `${result.itunes_episode}: ${result.title}`,
-    image: result.itunes_image.href,
-    published: result.published,
-    time: secondsToTime(result.itunes_duration),
-    description: result.description,
-    audio: result.enclosures.map((enclosure) => ({
-      src: enclosure.url,
-      type: enclosure.type,
-    }))[0],
-  }
+  const response = await prisma.episode.findFirst({
+    where: {
+      slug: episode,
+    },
+  })
 
   return NextResponse.json(response)
 }

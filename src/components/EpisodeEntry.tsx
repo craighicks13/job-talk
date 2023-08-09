@@ -18,7 +18,7 @@ export default function EpisodeEntry({ episode }) {
         src: episode.audio.src,
         type: episode.audio.type,
       },
-      link: `/${episode.id}`,
+      link: `/${episode.slug}`,
     }),
     [episode]
   )
@@ -48,7 +48,7 @@ export default function EpisodeEntry({ episode }) {
             className="order-first font-mono text-sm leading-7 text-slate-500"
           />
           <p className="mt-1 flex flex-col gap-4 text-base leading-7 text-slate-700">
-            {episode.description}
+            {episode.preview_description}
           </p>
           <EpisodeEntryControls
             episode={episode}
