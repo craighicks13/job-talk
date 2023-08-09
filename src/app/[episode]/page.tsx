@@ -5,7 +5,6 @@ import YoutubePreview from '@/components/YoutubePreview'
 import { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import Script from 'next/script'
 
 type Props = {
   params: { episode: string }
@@ -16,8 +15,7 @@ export default async function Episode({ params }: Props) {
   let { episode } = params
 
   const data = await fetch(
-    process.env.FRONTEND_URL + '/api/episode?episode=' + episode,
-    { cache: 'default' }
+    process.env.FRONTEND_URL + '/api/episode?episode=' + episode
   ).then((res) => res.json())
 
   let date = new Date(data.published)
@@ -30,7 +28,7 @@ export default async function Episode({ params }: Props) {
             <div className="flex items-center gap-6">
               {/* <PlayButton player={player} size="large" /> */}
               <div className="flex flex-col">
-                <h1 className="mt-2 text-4xl font-bold text-slate-900">
+                <h1 className="mt-2 text-2xl font-bold text-slate-900 lg:text-4xl">
                   {data.title}
                 </h1>
                 <Image
@@ -48,7 +46,20 @@ export default async function Episode({ params }: Props) {
                   youtube={data.youtube_preview}
                   title={data.title}
                 />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="relative">
+                  <div
+                    className="absolute inset-0 flex items-center"
+                    aria-hidden="true"
+                  >
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center">
+                    <span className="bg-white px-3 text-base font-semibold leading-6 text-gray-400">
+                      Listen to episode
+                    </span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 pt-4 lg:pt-7">
                   {data.spotify_link === '' ? (
                     <div className="btn btn-disabled">
                       <Icons.spotify className="h-6 w-6 fill-gray-400" />
@@ -90,10 +101,25 @@ export default async function Episode({ params }: Props) {
             className="prose prose-slate mt-14 [&>h2:nth-of-type(3n)]:before:bg-violet-200 [&>h2:nth-of-type(3n+2)]:before:bg-indigo-200 [&>h2]:mt-12 [&>h2]:flex [&>h2]:items-center [&>h2]:font-mono [&>h2]:text-sm [&>h2]:font-medium [&>h2]:leading-7 [&>h2]:text-slate-900 [&>h2]:before:mr-3 [&>h2]:before:h-3 [&>h2]:before:w-1.5 [&>h2]:before:rounded-r-full [&>h2]:before:bg-cyan-200 [&>ul]:mt-6 [&>ul]:list-['\2013\20'] [&>ul]:pl-5"
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
+          <div className="collapse bg-base-200">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+              View Transcripts
+            </div>
+            <div className="collapse-content"></div>
+          </div>
         </Container>
       </article>
     </>
   )
+}
+
+export async function generateStaticParams() {
+  const episodes = await fetch(process.env.FRONTEND_URL + '/api/episodes').then(
+    (res) => res.json()
+  )
+
+  return episodes.map((episode) => ({ episode: episode.slug }))
 }
 
 export async function generateMetadata(
