@@ -1,9 +1,11 @@
 import { Container } from '@/components/Container'
 import { FormattedDate } from '@/components/FormattedDate'
 import { Icons } from '@/components/Icons'
+import YoutubePreview from '@/components/YoutubePreview'
 import { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import Script from 'next/script'
 
 type Props = {
   params: { episode: string }
@@ -15,10 +17,8 @@ export default async function Episode({ params }: Props) {
 
   const data = await fetch(
     process.env.FRONTEND_URL + '/api/episode?episode=' + episode,
-    { cache: 'no-cache' }
+    { cache: 'default' }
   ).then((res) => res.json())
-
-  console.log(data)
 
   let date = new Date(data.published)
 
@@ -43,6 +43,10 @@ export default async function Episode({ params }: Props) {
                 <FormattedDate
                   date={date}
                   className="order-first font-mono text-sm leading-7 text-slate-500"
+                />
+                <YoutubePreview
+                  youtube={data.youtube_preview}
+                  title={data.title}
                 />
                 <div className="grid grid-cols-2 gap-3">
                   {data.spotify_link === '' ? (
