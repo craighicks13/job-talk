@@ -69,7 +69,7 @@ export default async function Episode({ params }: Props) {
 
 export async function generateMetadata(
   { params, searchParams }: Props,
-  parent?: ResolvingMetadata
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
   const slug = params.episode
@@ -80,10 +80,7 @@ export async function generateMetadata(
   ).then((res) => res.json())
 
   // optionally access and extend (rather than replace) parent metadata
-  let previousImages = []
-  if (parent) {
-    let previousImages = (await parent).openGraph?.images || []
-  }
+  const previousImages = (await parent).openGraph?.images || []
 
   return {
     title: episode.title,
