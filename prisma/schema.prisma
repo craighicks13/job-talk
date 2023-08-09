@@ -9,10 +9,10 @@ datasource db {
 
 model Episode {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  episode_id          Int
+  episode_id          Int      @unique
   published           DateTime
   title               String
-  slug                String
+  slug                String   @unique
   image               String
   banner_image        String
   youtube_preview     String
@@ -20,6 +20,8 @@ model Episode {
   keywords            String[]
   preview_description String
   content             String
+  apple_link          String
+  spotify_link        String
   transcript          String
   time                String
   audio               Audio

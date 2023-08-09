@@ -3,6 +3,12 @@ import { secondsToTime } from '@/lib/utils'
 import { NextResponse } from 'next/server'
 import parse from 'rss-to-json'
 
+type PodcastLinks = {
+  id: number
+  apple: string
+  spotify: string
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
@@ -17,35 +23,63 @@ export async function GET(request: Request) {
   )
   const posts = await res.json()
 
-  console.log(feed)
-
   const total_pages = Math.ceil(feed.items.length / Number(limit))
   const total_episodes = feed.items.length
 
   const slice_start = (Number(page) - 1) * Number(limit)
   const slice_end = Number(page) * Number(limit)
 
-  const response = await createResponse(
-    total_pages,
-    total_episodes,
-    feed,
-    posts,
-    slice_start,
-    slice_end
+  const episodes = await Promise.all(
+    feed.items.map(async ({ itunes_episode }, index) => {
+      return await getPodcastLinks(
+        itunes_episode,
+        posts[index].content.rendered
+      )
+    })
   )
 
-  try {
-    const episodes = await prisma.episode.createMany({
-      data: response.episodes,
-    })
-    return NextResponse.json({ success: true })
-  } catch (e) {
-    return NextResponse.json({
-      failure: true,
-      error: e,
-      data: response.episodes,
-    })
+  updatePodcastLinks(episodes)
+
+  async function updatePodcastLinks(episodes: Array<PodcastLinks>) {
+    try {
+      const updatePromises = episodes.map((episode) =>
+        prisma.episode.update({
+          where: { episode_id: episode.id },
+          data: { apple_link: episode.apple, spotify_link: episode.spotify },
+        })
+      )
+
+      await Promise.all(updatePromises)
+      return NextResponse.json({ success: true })
+    } catch (e) {
+      return NextResponse.json({
+        failure: true,
+        error: e,
+      })
+    }
   }
+
+  // const response = await createResponse(
+  //   total_pages,
+  //   total_episodes,
+  //   feed,
+  //   posts,
+  //   slice_start,
+  //   slice_end
+  // )
+
+  // try {
+  //   const episodes = await prisma.episode.createMany({
+  //     data: response.episodes,
+  //   })
+  //   return NextResponse.json({ success: true })
+  // } catch (e) {
+  //   return NextResponse.json({
+  //     failure: true,
+  //     error: e,
+  //     data: response.episodes,
+  //   })
+  // }
 }
 
 async function getYoutubeLinks(content: string): Promise<string[]> {
@@ -57,6 +91,22 @@ async function getYoutubeLinks(content: string): Promise<string[]> {
     )
 
     resolve(matches)
+  })
+}
+
+async function getPodcastLinks(
+  id: number,
+  content: string
+): Promise<PodcastLinks> {
+  return new Promise((resolve) => {
+    const appleRegex =
+      /https:\/\/podcasts\.apple\.com\/ca\/podcast\/the\-job\-talk\-podcast\/[^\s]+/g
+    const spotifyRegex = /https:\/\/open\.spotify\.com\/episode\/[^\s]+/g
+    let apple = Array.from(content.matchAll(appleRegex), (m) => m[0])[0]
+    apple = apple ? apple.replace('"', '') : ''
+    let spotify = Array.from(content.matchAll(spotifyRegex), (m) => m[0])[0]
+    spotify = spotify ? spotify.replace('"', '') : ''
+    resolve({ id, apple, spotify })
   })
 }
 

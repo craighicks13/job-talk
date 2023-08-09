@@ -3,6 +3,7 @@ import { FormattedDate } from '@/components/FormattedDate'
 import { Icons } from '@/components/Icons'
 import { Metadata, ResolvingMetadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type Props = {
   params: { episode: string }
@@ -13,10 +14,11 @@ export default async function Episode({ params }: Props) {
   let { episode } = params
 
   const data = await fetch(
-    process.env.FRONTEND_URL + '/api/episode?episode=' + episode
+    process.env.FRONTEND_URL + '/api/episode?episode=' + episode,
+    { cache: 'no-cache' }
   ).then((res) => res.json())
 
-  console.log(data.title, data.audio.src, data.audio.type, data.slug)
+  console.log(data)
 
   let date = new Date(data.published)
 
@@ -43,15 +45,38 @@ export default async function Episode({ params }: Props) {
                   className="order-first font-mono text-sm leading-7 text-slate-500"
                 />
                 <div className="grid grid-cols-2 gap-3">
-                  <button className="btn btn-primary">
-                    <Icons.spotify className="h-6 w-6" />
-                    Spotify
-                  </button>
-                  <button className="btn btn-secondary">
-                    <Icons.apple className="h-8 w-8" />
-                    Apple Podcasts
-                  </button>
-                  <button className="btn btn-neutral">Listen</button>
+                  {data.spotify_link === '' ? (
+                    <div className="btn btn-disabled">
+                      <Icons.spotify className="h-6 w-6 fill-gray-400" />
+                      Spotify
+                    </div>
+                  ) : (
+                    <Link
+                      href={data.spotify_link}
+                      target="_blank"
+                      className="btn bg-[#1db954] text-white hover:bg-[#1ed760]"
+                    >
+                      <Icons.spotify className="h-6 w-6 fill-white" />
+                      Spotify
+                    </Link>
+                  )}
+
+                  {data.apple_link === '' ? (
+                    <div className="btn btn-disabled">
+                      <Icons.apple className="h-8 w-8 fill-gray-400" />
+                      Apple Podcasts
+                    </div>
+                  ) : (
+                    <Link
+                      href={data.apple_link}
+                      target="_blank"
+                      className="btn bg-[#872EC4] text-white hover:bg-[#B150E2] disabled:cursor-not-allowed disabled:bg-gray-600"
+                      aria-disabled={data.apple_link === ''}
+                    >
+                      <Icons.apple className="h-8 w-8 fill-white" />
+                      Apple Podcasts
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
