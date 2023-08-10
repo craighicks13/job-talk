@@ -1,9 +1,17 @@
-import { type LucideIcon, LucideProps, Mail, User2, Clock } from 'lucide-react'
+import {
+  type LucideIcon,
+  LucideProps,
+  Mail,
+  User2,
+  Clock,
+  Heart,
+} from 'lucide-react'
 
 export type Icon = LucideIcon
 
 export const Icons = {
   email: Mail,
+  heart: Heart,
   person: User2,
   clock: Clock,
   apple: ({ ...props }: LucideProps) => (

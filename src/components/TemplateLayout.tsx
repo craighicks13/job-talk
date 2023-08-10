@@ -162,6 +162,28 @@ function AboutSection(props) {
   )
 }
 
+function PartnerSection(props) {
+  return (
+    <section {...props}>
+      <h2 className="flex items-center font-mono text-sm font-medium leading-7 text-slate-900">
+        <TinyWaveFormIcon
+          colors={['fill-blue-300', 'fill-blue-500']}
+          className="h-2.5 w-2.5"
+        />
+        <span className="ml-2.5">Sponsors and Partners</span>
+      </h2>
+      <p className={clsx('mt-2 text-base leading-7 text-slate-700')}>
+        We are grateful for the support and collaboration of our sponsors and
+        partners. They help us make this podcast possible.
+      </p>
+
+      <button className="btn btn-outline btn-sm mt-2 text-orange-500 hover:border-orange-600 hover:bg-orange-500 hover:text-white active:text-orange-900">
+        <Link href="/sponsors-and-partners">Check them out</Link>
+      </button>
+    </section>
+  )
+}
+
 export function TemplateLayout({ children }) {
   let hosts = ['Kim Brix', 'Robert Belland']
 
@@ -211,16 +233,12 @@ export function TemplateLayout({ children }) {
             <div className="absolute inset-0 rounded-lg ring-1 ring-inset ring-black/10 sm:rounded-xl lg:rounded-2xl" />
           </Link>
           <div className="mt-10 text-center lg:mt-12 lg:text-left">
-            <p className="text-xl font-medium text-slate-900">
-              <Link href="/">
-                Career Crisis <strong>Ultimate</strong> Interview Series!
-              </Link>
-            </p>
             <p className="mt-3 text-lg font-light leading-8 text-slate-700">
               Explore careers and listen to stories from every job imaginable!
             </p>
           </div>
           <AboutSection className="mt-12 hidden lg:block" />
+          <PartnerSection className="mt-12 hidden lg:block" />
           <section className="mt-10 lg:mt-12">
             <h2 className="sr-only flex items-center font-mono text-sm font-medium leading-7 text-slate-900 lg:not-sr-only">
               <TinyWaveFormIcon
@@ -257,6 +275,7 @@ export function TemplateLayout({ children }) {
       <footer className="border-t border-slate-200 bg-slate-50 py-10 pb-40 sm:py-16 sm:pb-32 lg:hidden">
         <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4">
           <AboutSection />
+          <PartnerSection className="mt-10" />
           <h2 className="mt-8 flex items-center font-mono text-sm font-medium leading-7 text-slate-900">
             <Icons.person className="h-3 w-auto fill-slate-300" />
             <span className="ml-2.5">Hosted by</span>
