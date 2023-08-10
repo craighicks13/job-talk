@@ -19,7 +19,7 @@ export default function YoutubePreview({
   return (
     <>
       <button
-        className="btn btn-outline my-5 w-full text-orange-500 hover:border-orange-600 hover:bg-orange-500 md:my-10"
+        className="btn btn-outline my-5 text-orange-500 hover:border-orange-600 hover:bg-orange-500 md:my-10"
         onClick={() => {
           if (document) {
             ;(

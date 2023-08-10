@@ -1,4 +1,8 @@
+'use client'
+
 import clsx from 'clsx'
+import { useAudioPlayer } from '../AudioProvider'
+import { useMemo } from 'react'
 
 function PauseIcon(props) {
   return (

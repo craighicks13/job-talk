@@ -5,8 +5,8 @@ export default function PreviewSkeleton() {
     <>
       <div className="mt-10 pb-12 pt-16 sm:pb-4 lg:pt-12">
         <Container>
-          <div className="mb-4 h-6 w-36 rounded-lg bg-gray-200"></div>
           <div role="status" className="animate-pulse space-y-8">
+            <div className="mb-4 h-6 w-36 rounded-lg bg-gray-200"></div>
             <div className="flex aspect-square w-1/2 items-center justify-center rounded-lg bg-gray-300">
               <svg
                 className="h-10 w-10 text-gray-200 dark:text-gray-600"

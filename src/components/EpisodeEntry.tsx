@@ -1,6 +1,4 @@
 'use client'
-
-import { useMemo } from 'react'
 import Link from 'next/link'
 
 import { Container } from '@/components/Container'
@@ -10,18 +8,6 @@ import EpisodeEntryControls from '@/components/EpisodeEntryControls'
 
 export default function EpisodeEntry({ episode }) {
   let date = new Date(episode.published)
-
-  let audioPlayerData = useMemo(
-    () => ({
-      title: episode.title,
-      audio: {
-        src: episode.audio.src,
-        type: episode.audio.type,
-      },
-      link: `/${episode.slug}`,
-    }),
-    [episode]
-  )
 
   return (
     <article
@@ -50,10 +36,7 @@ export default function EpisodeEntry({ episode }) {
           <p className="mt-1 flex flex-col gap-4 text-base leading-7 text-slate-700">
             {episode.preview_description}
           </p>
-          <EpisodeEntryControls
-            episode={episode}
-            audioPlayerData={audioPlayerData}
-          />
+          <EpisodeEntryControls episode={episode} />
         </div>
       </Container>
     </article>

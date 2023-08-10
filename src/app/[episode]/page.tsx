@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container'
+import EpisodeEntryControls from '@/components/EpisodeEntryControls'
 import { FormattedDate } from '@/components/FormattedDate'
 import { Icons } from '@/components/Icons'
 import YoutubePreview from '@/components/YoutubePreview'
@@ -21,17 +22,22 @@ export default async function Episode({ params }: Props) {
 
   let date = new Date(data.published)
 
-  console.log(data.spotify_link, data.apple_link)
-
   return (
     <>
-      <article className="py-16 lg:py-36">
+      <Container className="mt-5 lg:mt-24">
+        <Link
+          className="text-sm text-orange-500 hover:text-orange-700"
+          href="/"
+        >
+          &lt; back to all episodes
+        </Link>
+      </Container>
+      <article className="py-5 lg:py-16">
         <Container>
           <header className="flex flex-col">
             <div className="flex items-center gap-6">
-              {/* <PlayButton player={player} size="large" /> */}
               <div className="flex flex-col">
-                <h1 className="mt-2 text-2xl font-bold text-slate-900 lg:text-4xl">
+                <h1 className="mt-2 text-xl font-bold text-slate-900 lg:text-2xl">
                   {data.title}
                 </h1>
                 <Image
@@ -45,10 +51,13 @@ export default async function Episode({ params }: Props) {
                   date={date}
                   className="order-first font-mono text-sm leading-7 text-slate-500"
                 />
-                <YoutubePreview
-                  youtube={data.youtube_preview}
-                  title={data.title}
-                />
+                <div className="flex w-full items-center justify-between  ">
+                  <EpisodeEntryControls episode={data} controlType="simple" />
+                  <YoutubePreview
+                    youtube={data.youtube_preview}
+                    title={data.title}
+                  />
+                </div>
                 <div className="relative">
                   <div
                     className="absolute inset-0 flex items-center"
@@ -58,7 +67,7 @@ export default async function Episode({ params }: Props) {
                   </div>
                   <div className="relative flex justify-center">
                     <span className="bg-white px-3 text-base font-semibold leading-6 text-gray-400">
-                      Listen to episode
+                      Check out episode here
                     </span>
                   </div>
                 </div>
