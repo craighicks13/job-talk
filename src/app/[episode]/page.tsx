@@ -62,11 +62,11 @@ export default async function Episode({ params }: Props) {
                     </span>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3 pt-4 lg:pt-7">
+                <div className="grid grid-cols-3 gap-3 pt-4 lg:pt-7">
                   {data.spotify_link === '' ? (
                     <div className="btn btn-disabled">
                       <Icons.spotify className="h-6 w-6 fill-gray-400" />
-                      Spotify
+                      <span className="hidden sm:flex">Spotify</span>
                     </div>
                   ) : (
                     <Link
@@ -75,25 +75,33 @@ export default async function Episode({ params }: Props) {
                       className="btn bg-[#1db954] text-white hover:bg-[#1ed760]"
                     >
                       <Icons.spotify className="h-6 w-6 fill-white" />
-                      Spotify
+                      <span className="hidden sm:flex">Spotify</span>
                     </Link>
                   )}
 
                   {data.apple_link === '' ? (
                     <div className="btn btn-disabled">
                       <Icons.apple className="h-8 w-8 fill-gray-400" />
-                      Apple Podcasts
+                      <span className="hidden sm:flex">Podcasts</span>
                     </div>
                   ) : (
                     <Link
                       href={data.apple_link}
                       target="_blank"
-                      className="btn bg-[#872EC4] text-white hover:bg-[#B150E2] disabled:cursor-not-allowed disabled:bg-gray-600"
+                      className="btn bg-[#872EC4] text-white hover:bg-[#B150E2] disabled:cursor-not-allowed disabled:bg-gray-600 "
                     >
                       <Icons.apple className="h-8 w-8 fill-white" />
-                      Apple Podcasts
+                      <span className="hidden sm:flex">Podcasts</span>
                     </Link>
                   )}
+                  <Link
+                    href={data.youtube_full}
+                    target="_blank"
+                    className="btn w-full bg-[#b31f1f] text-white hover:bg-[#cc2222]"
+                  >
+                    <Icons.youtube className="h-6 w-6 fill-white" />
+                    <span className="hidden sm:flex">Youtube</span>
+                  </Link>
                 </div>
               </div>
             </div>
