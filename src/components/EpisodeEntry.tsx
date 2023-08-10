@@ -15,29 +15,31 @@ export default function EpisodeEntry({ episode }) {
       className="py-10 sm:py-12"
     >
       <Container>
-        <div className="flex flex-col items-start">
+        <FormattedDate
+          date={date}
+          className="order-first font-mono text-sm leading-7 text-slate-500"
+        />
+        <div className="flex items-start gap-5">
           <Image
             src={episode.image}
             alt={episode.title}
             width="640"
             height="640"
-            className="my-2 w-1/2 rounded-lg"
+            className="my-2 w-1/5 rounded-lg"
           />
-          <h2
-            id={`episode-${episode.id}-title`}
-            className="mt-2 text-lg font-bold text-slate-900"
-          >
-            <Link href={`/${episode.slug}`}>{episode.title}</Link>
-          </h2>
-          <FormattedDate
-            date={date}
-            className="order-first font-mono text-sm leading-7 text-slate-500"
-          />
-          <p className="mt-1 flex flex-col gap-4 text-base leading-7 text-slate-700">
-            {episode.preview_description}
-          </p>
-          <EpisodeEntryControls episode={episode} />
+          <div>
+            <h2
+              id={`episode-${episode.id}-title`}
+              className="mt-2 text-lg font-bold text-slate-900"
+            >
+              <Link href={`/${episode.slug}`}>{episode.title}</Link>
+            </h2>
+            <p className="mt-1 flex flex-col gap-4 text-sm leading-7 text-slate-700">
+              {episode.preview_description}
+            </p>
+          </div>
         </div>
+        <EpisodeEntryControls episode={episode} />
       </Container>
     </article>
   )
