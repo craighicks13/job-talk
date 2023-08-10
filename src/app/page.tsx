@@ -2,6 +2,7 @@
 
 import { Container } from '@/components/Container'
 import EpisodeEntry from '@/components/EpisodeEntry'
+import PreviewSkeleton from '@/components/PreviewSkeleton'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 export default function Home() {
@@ -33,7 +34,10 @@ export default function Home() {
           </h1>
         </Container>
         {!data ? (
-          <div className="p-10">Loading...</div>
+          <>
+            <PreviewSkeleton />
+            <PreviewSkeleton />
+          </>
         ) : (
           <>
             <div className="divide-y divide-slate-100 sm:mt-4 lg:mt-8 lg:border-t lg:border-slate-100">
@@ -43,20 +47,26 @@ export default function Home() {
                 ))
               )}
             </div>
-
-            <div className="mt-8 flex justify-center">
-              <button
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-                className="w-2/3 rounded bg-orange-400 p-3 text-center font-bold text-white hover:bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-400"
-              >
-                {isFetchingNextPage
-                  ? 'Loading more..'
-                  : (data?.pages.length ?? 0) < 6
-                  ? 'Load More'
-                  : 'Nothing more to load'}
-              </button>
-            </div>
+            {isFetchingNextPage ? (
+              <>
+                <PreviewSkeleton />
+                <PreviewSkeleton />
+              </>
+            ) : (
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                  className="w-2/3 rounded bg-orange-400 p-3 text-center font-bold text-white hover:bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-400"
+                >
+                  {isFetchingNextPage
+                    ? 'Loading more..'
+                    : (data?.pages.length ?? 0) < 6
+                    ? 'Load More'
+                    : 'Nothing more to load'}
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

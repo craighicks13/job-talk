@@ -15,10 +15,13 @@ export default async function Episode({ params }: Props) {
   let { episode } = params
 
   const data = await fetch(
-    process.env.FRONTEND_URL + '/api/episode?episode=' + episode
+    process.env.FRONTEND_URL + '/api/episode?episode=' + episode,
+    { cache: 'no-cache' }
   ).then((res) => res.json())
 
   let date = new Date(data.published)
+
+  console.log(data.spotify_link, data.apple_link)
 
   return (
     <>
@@ -86,7 +89,6 @@ export default async function Episode({ params }: Props) {
                       href={data.apple_link}
                       target="_blank"
                       className="btn bg-[#872EC4] text-white hover:bg-[#B150E2] disabled:cursor-not-allowed disabled:bg-gray-600"
-                      aria-disabled={data.apple_link === ''}
                     >
                       <Icons.apple className="h-8 w-8 fill-white" />
                       Apple Podcasts
