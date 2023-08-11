@@ -254,14 +254,14 @@ export function TemplateLayout({ children }) {
             >
               {socialLinks.map(({ name, icon, link }) => (
                 <li key={name} className="flex">
-                  <Link
+                  <a
                     href={link}
                     className="group flex items-center"
                     aria-label={name}
                   >
                     {icon}
                     <span className="hidden sm:ml-3 sm:block">{name}</span>
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
